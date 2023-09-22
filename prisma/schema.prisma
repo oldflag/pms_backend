@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id   String @id @default(uuid())
+  name  String
+  email String  @unique
+  role  Role  @default(BASIC)
+  active Boolean @default(true)
+  createdAt  DateTime   @db.Timestamptz(0) @default(now())
+  lastLogin  DateTime? 
+  password  String
+}
+
+enum Role {
+  BASIC
+  USER
+  MANAGER
+  ADMIN
+  ACCOUNT
+}
+
+model Client {
+  id   String @id @default(uuid())
+  name  String @unique
+  email String @unique
+  contactName String?
+  contactPhone String?
+  note String?
+  url String?
+  active Boolean @default(true) 
+  createdAt  DateTime   @db.Timestamptz(0) @default(now())
+  orders Order[]
+}
+
+model Order {
+  id String @id @default(uuid())
+  orderNum String @unique
+  client Client? @relation(fields: [clientId], references: [id])
+  clientId String?
+  products Product[]
+  quantity String?
+  price String?
+
+}
+
+model ProductItem {
+
+  id   String @id @default(uuid()) 
+  name  String
+  description String? 
+  generic_name String?
+  part String?
+  lot String?
+  store String?
+  // reagentGroup ReagentGroup? @relation(fields: [reagentGroupId], references: [id])
+  // reagentGroupId String?
+  box Box? @relation(fields: [boxId], references: [id])
+  boxId String?
+  status String? 
+  expiration_date DateTime? @db.Timestamptz(0)
+  metadata Json?
+  createdAt  DateTime @db.Timestamptz(0) @default(now())
+
+}
+
+
+model Box {
+
+  id   String @id @default(uuid()) 
+  name  String 
+  description String?
+  generic_name String?
+  part String?
+  lot String?
+  store String?
+  productItems ProductItem[]
+  product Product? @relation(fields: [productId], references: [id])
+  productId String?
+  status String? 
+  expiration_date DateTime? @db.Timestamptz(0)
+  metadata Json?
+  createdAt  DateTime @db.Timestamptz(0) @default(now())
+
+}
+
+model Product {
+
+  id   String @id @default(uuid()) 
+  name  String
+  productCategory ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String 
+  description String?
+  generic_name String?
+  part String?
+  lot String?
+  store String?
+  boxs Box[]
+  order Order? @relation(fields: [orderId], references: [id])
+  orderId String?
+  status String? 
+  expiration_date DateTime? @db.Timestamptz(0)
+  metadata Json?
+  createdAt  DateTime @db.Timestamptz(0) @default(now())
+
+}
+
+model ProductCategory {
+
+  id   String @id @default(uuid()) 
+  name  String    // Droplet Paired-Tag Kit, ...
+  description String? 
+  type String? // ReagentKit, Library service, analysis service ??
+  products Product[]
+  itemCategorys ItemCategory[]
+
+}
+
+model ItemCategory {
+
+  id   String @id @default(uuid()) 
+  name  String    // MB1, MB2, ....
+  part String
+  productCategory ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String
+  protocol String // Droplet, Split&Pool, Bulk
+  subprotocol String // 10x 2Bit Multiplex, Cut&Tag, 12 Assays, ...
+  boxNum String  //box1, box2, ....
+  orderingNum String // 1,2,3,4,....
+
+  // type String? // ReagentKit, Library service, analysis service ??
+
+}
+
+model LotQc {
+
+  id   String @id @default(uuid()) 
+  name  String    // Lot1, Lot2, ...
+  description String? 
+  type String? // ReagentKit, Library service, analysis service ??
+  qcInfo String?
+
+}
