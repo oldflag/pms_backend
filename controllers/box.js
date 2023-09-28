@@ -1,40 +1,43 @@
-import { createProductItem, getProductItems, getProductItem, updateProductItem, deleteProductItem, createProductItems } from '../lib/productItems.js';
+import { createBox, getBoxs, getBox, updateBox, deleteBox, createBoxs } from '../lib/boxs.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const createOne = tryCatch(async (req, res) => {
  
   try {
+
     console.log(req.body)
-    const results = await createProductItem(req.body)
-    const aResult = await getProductItem(results.id)
-    res.status(200).json({ success: true, result: aResult });
+
+    const results = await createBox(req.body)
+    console.log(results)
+    const aresult = await getBox(results.id)
+    res.status(200).json({ success: true, result: aresult });
 
   } catch (e) {
-    console.log('There is something wrong : productItem.createOne')
+    console.log('There is something wrong : box.createOne')
     console.log(results)
     res.status(500).json({ success: false, result: e });
   }
 });
 
 export const createMany = tryCatch(async (req, res) => {
-  let results = await createProductItems(req.body)
+  let results = await createBoxs(req.body)
   if(results.count > 0){
-    results = await getProductItems()
+    results = await getBoxs()
   }
   res.status(200).json({ success: true, result: results });
 });
 
 export const getAll = tryCatch(async (req, res) => {
-  const results = await getProductItems()
+  const results = await getBoxs()
   res.status(200).json({ success: true, result: results });
 });
 
 export const updateStatus = tryCatch(async (req, res) => {
-  await updateProductItem(req.params.Id, req.body);
+  await updateBox(req.params.Id, req.body);
   res.status(200).json({ success: true, result: { id: req.params.Id } });
 });
 
 export const deleteOne = tryCatch(async (req, res) => {
-  await deleteProductItem(req.params.Id);
+  await deleteBox(req.params.Id);
   res.status(200).json({ success: true, result: { id: req.params.Id } });
 });

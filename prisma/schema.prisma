@@ -67,7 +67,7 @@ model ProductItem {
   box Box? @relation(fields: [boxId], references: [id])
   boxId String?
   status String? 
-  expiration_date DateTime? @db.Timestamptz(0)
+  expiration_date String?
   metadata Json?
   createdAt  DateTime @db.Timestamptz(0) @default(now())
 
@@ -108,7 +108,7 @@ model Product {
   order Order? @relation(fields: [orderId], references: [id])
   orderId String?
   status String? 
-  expiration_date DateTime? @db.Timestamptz(0)
+  expiration_date String?
   metadata Json?
   createdAt  DateTime @db.Timestamptz(0) @default(now())
 

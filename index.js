@@ -5,6 +5,8 @@ import clientRouter from './routes/clientRouter.js';
 import productCategoryRouter from './routes/productCategoryRouter.js';
 import itemCategoryRouter from './routes/itemCategoryRouter.js';
 import productItemRouter from './routes/productItemRouter.js';
+import productRouter from './routes/productRouter.js';
+import boxRouter from './routes/boxRouter.js';
 
 dotenv.config();
 
@@ -31,6 +33,8 @@ app.use('/client', clientRouter);
 app.use('/productCategory', productCategoryRouter);
 app.use('/itemCategory', itemCategoryRouter);
 app.use('/productItem', productItemRouter);
+app.use('/product', productRouter);
+app.use('/box', boxRouter);
 
 app.get('/', (req, res) => res.json({ message: 'Welcome to our API' }));
 app.use((req, res) =>
