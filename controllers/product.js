@@ -1,4 +1,4 @@
-import { createProduct, getProducts, getProduct, updateProduct, deleteProduct, createProducts } from '../lib/products.js';
+import { createProduct, connectBoxs, getProducts, getProduct, updateProduct, deleteProduct, createProducts } from '../lib/products.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const createOne = tryCatch(async (req, res) => {
@@ -18,6 +18,22 @@ export const createOne = tryCatch(async (req, res) => {
   }
 });
 
+export const connectToBoxs = tryCatch(async (req, res) => {
+
+  // console.log(req.body)
+  // console.log(req.params.Id)
+  try {
+    const results = await connectBoxs(req.params.Id, req.body)
+    // const aresult = await getProduct(results.id)
+    res.status(200).json({ success: true, result: aresult });
+
+  } catch (e) {
+    console.log('There is something wrong : product.connectBoxs')
+    console.log(results)
+    res.status(500).json({ success: false, result: e });
+  }
+});
+
 export const createMany = tryCatch(async (req, res) => {
   let results = await createProducts(req.body)
   if(results.count > 0){
@@ -28,6 +44,7 @@ export const createMany = tryCatch(async (req, res) => {
 
 export const getAll = tryCatch(async (req, res) => {
   const results = await getProducts()
+  console.log(results)
   res.status(200).json({ success: true, result: results });
 });
 

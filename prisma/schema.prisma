@@ -47,9 +47,14 @@ model Order {
   orderNum String @unique
   client Client? @relation(fields: [clientId], references: [id])
   clientId String?
+  productCategory ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategoryId String 
   products Product[]
   quantity String?
   price String?
+  status String?
+  note String?
+  createdAt  DateTime @db.Timestamptz(0) @default(now())
 
 }
 
@@ -96,7 +101,7 @@ model Box {
 model Product {
 
   id   String @id @default(uuid()) 
-  name  String
+  name  String   // Use OrderNum as product name  
   productCategory ProductCategory @relation(fields: [productCategoryId], references: [id])
   productCategoryId String 
   description String?
@@ -122,6 +127,7 @@ model ProductCategory {
   type String? // ReagentKit, Library service, analysis service ??
   products Product[]
   itemCategorys ItemCategory[]
+  orders Order[]
 
 }
 
@@ -150,3 +156,13 @@ model LotQc {
   qcInfo String?
 
 }
+
+// model Reagent {
+
+//   id   String @id @default(uuid()) 
+//   component String
+//   description String?
+//   vendor String?
+//   catNum String?
+//   lotNum String?
+// }
