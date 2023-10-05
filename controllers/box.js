@@ -5,10 +5,7 @@ export const createOne = tryCatch(async (req, res) => {
  
   try {
 
-    console.log(req.body)
-
     const results = await createBox(req.body)
-    console.log(results)
     const aresult = await getBox(results.id)
     res.status(200).json({ success: true, result: aresult });
 
