@@ -157,12 +157,15 @@ model LotQc {
 
 }
 
-// model Reagent {
+model Reagent {
 
-//   id   String @id @default(uuid()) 
-//   component String
-//   description String?
-//   vendor String?
-//   catNum String?
-//   lotNum String?
-// }
+  id   String @id @default(uuid()) 
+  name String
+  description String?
+  vendor String?
+  catNum String?
+  partNum String?
+  lotNum String?
+  expiration String?
+  createdAt  DateTime @db.Timestamptz(0) @default(now())
+}
