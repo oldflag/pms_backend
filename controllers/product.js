@@ -44,7 +44,7 @@ export const createMany = tryCatch(async (req, res) => {
 
 export const getAll = tryCatch(async (req, res) => {
   const results = await getProducts()
-  console.log(results)
+  // console.log(results)
   res.status(200).json({ success: true, result: results });
 });
 
